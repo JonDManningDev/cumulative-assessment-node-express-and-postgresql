@@ -1,7 +1,7 @@
 services:
   - type: web
-    name: my-knex-app
-    env: node
+    name: cumulative-assessment-node-express-and-postgresql
+    runtime: node
     region: virginia
     plan: free
     branch: main
@@ -12,7 +12,6 @@ services:
       - key: NODE_ENV
         value: production
       - key: PRODUCTION_DATABASE_URL
-        sync: false # Set this manually in Render's dashboard or secrets manager
-    postDeployCommand: |
+    preDeployCommand: |
       npx knex migrate:latest --knexfile knexfile.js
       npx knex seed:run --knexfile knexfile.js
