@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: my-knex-app
+    env: node
+    region: virginia
+    plan: free
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PRODUCTION_DATABASE_URL
+        sync: false # Set this manually in Render's dashboard or secrets manager
+    postDeployCommand: |
+      npx knex migrate:latest --knexfile knexfile.js
+      npx knex seed:run --knexfile knexfile.js
